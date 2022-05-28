@@ -1,7 +1,7 @@
 ﻿using DNN_Demo;
 
 
-// NOTE: Breaks once we go greater than 2..Why?
+// NOTE: Breaks once we go greater than 1..Why?
 int synapseMatrixColumns = 2;// 1;
 int synapseMatrixLines = 3;
 var curNeuralNetwork = new NeuralNetWork(synapseMatrixColumns, synapseMatrixLines);
