@@ -7,3 +7,6 @@ https://github.com/lschmittalves/simple-neural-network
 
 Review this article:
 https://devindeep.com/neural-network-with-c-from-scratch/
+
+Excellent explanation video:
+https://www.youtube.com/watch?v=lFOOjeH2wsY
