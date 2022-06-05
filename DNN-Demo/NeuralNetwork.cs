@@ -1,6 +1,6 @@
 ﻿namespace DNN_Demo
 {
-    public class NeuralNetWork
+    public class NeuralNetwork
     {
         private Random _radomObj = new Random(1);
 
@@ -9,7 +9,7 @@
         public double[,] SynapsesMatrix { get; private set; }
 
 
-        public NeuralNetWork(int synapseMatrixColumns, int synapseMatrixLines)
+        public NeuralNetwork(int synapseMatrixColumns, int synapseMatrixLines)
         {
             SynapseMatrixColumns = synapseMatrixColumns;
             SynapseMatrixLines = synapseMatrixLines;

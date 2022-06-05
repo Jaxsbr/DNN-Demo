@@ -1,75 +1,61 @@
 ﻿using DNN_Demo;
 
 
-int synapseMatrixColumns = 1; // represents the columns of inputs
-int synapseMatrixLines = 8; // represents the neuron count
-var curNeuralNetwork = new NeuralNetWork(synapseMatrixColumns, synapseMatrixLines);
+//int synapseMatrixColumns = 1; // represents the columns of inputs
+//int synapseMatrixLines = 8; // represents the neuron count
+//var curNeuralNetwork = new NeuralNetwork(synapseMatrixColumns, synapseMatrixLines);
 
-Console.WriteLine("Synaptic weights before training:");
-PrintMatrix(curNeuralNetwork.SynapsesMatrix);
-
-
-var trainingInputs = new double[,]
-{
-    { 0, 0, 0, 0, 1, 1, 1, 1 },
-    { 1, 1, 1, 1, 0, 0, 0, 0 }
-};
-var trainingOutputs = NeuralNetWork.MatrixTranspose(new double[,] { { 1, 0 } });
-
-curNeuralNetwork.Train(trainingInputs, trainingOutputs, 100);
-
-Console.WriteLine("\nSynaptic weights after training:");
-PrintMatrix(curNeuralNetwork.SynapsesMatrix);
+//Console.WriteLine("Synaptic weights before training:");
+//PrintMatrix(curNeuralNetwork.SynapsesMatrix);
 
 
-// testing neural networks against a new problem 
-//var output = curNeuralNetwork.Think(new double[,] { { 0, 1, 1 } });
-//Console.WriteLine("\nConsidering new problem [1, 0, 0] => :");
+//// 1-4 attributes of first actor
+//// 5-8 attributes of second actor
+//var trainingInputs = new double[,]
+//{
+//    { 0, 0, 0, 0, 1, 1, 1, 1 }, // 1st
+//    { 1, 1, 1, 1, 0, 0, 0, 0 }, // 2nd
+//    { 1, 0, 0, 0, 0, 0, 0, 1 }, // 3rd
+//    { 1, 0, 0, 0, 0, 1, 0, 1 }, // 4rd
+//};
+//var trainingOutputs = NeuralNetwork.MatrixTranspose(new double[,]
+//{
+//    {
+//        1, // 1st, the second actor wins
+//        0, // 2nd, the first actor wins
+//        1, // 3rd, first attribute weighs more than last attribute, thus first actor wins
+//        0, // 4th, first attribute weighs less than 2nd and last attribute combined, thus second actor wins
+//    }
+//});
 
-var output = curNeuralNetwork.Think(new double[,] { { 0, 1, 1, 1, 0, 0, 0, 1 } });
-Console.WriteLine("\nConsidering new problem [0, 1, 1, 1, 0, 0, 0, 1] => :");
-PrintMatrix(output, true);
+//curNeuralNetwork.Train(trainingInputs, trainingOutputs, 100);
+//Console.WriteLine("\nSynaptic weights after training:");
+//PrintMatrix(curNeuralNetwork.SynapsesMatrix);
 
-output = curNeuralNetwork.Think(new double[,] { { 0, 0, 0, 1, 0, 1, 1, 1 } });
-Console.WriteLine("\nConsidering new problem [0, 0, 0, 1, 0, 1, 1, 1] => :");
 
-PrintMatrix(output, true);
+//RunPrediction(curNeuralNetwork, new double[,] { { 0, 1, 1, 1, 0, 0, 0, 1 } });
+//RunPrediction(curNeuralNetwork, new double[,] { { 1, 0, 0, 0, 0, 1, 1, 1 } });
 
+
+
+
+var insectA = new Insect(false, false, true, true);
+var insectB = new Insect(false, false, false, true);
+var matchBuilder = new InsectMatchBuilder( insectA, insectB );
+
+var insect = matchBuilder.PredictWinner(new List<AttributeType>());
+var winnerName = insect.Id == insectA.Id ? "InsectA" : "other";
+winnerName = insect.Id == insectB.Id ? "InsectB" : winnerName;
+
+Console.WriteLine("Match up: InsectA VS InsectB");
+Console.WriteLine($"InsectA: {insectA}");
+Console.WriteLine($"InsectB: {insectB}");
+Console.WriteLine();
+Console.WriteLine($"Winner:{winnerName}");
 
 
 Console.Read();
 
-
-static void OriginalSample()
-{
-    // Original input
-    //var trainingInputs = new double[,] { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 1 }, { 0, 1, 1 } };
-    //var trainingOutputs = NeuralNetWork.MatrixTranspose(new double[,] { { 0, 1, 1, 0 } });
-}
-
-static void XORWithReverseSample()
-{
-    // Values 1 & 2 in the input matrix
-    // 0 & 0 = 0
-    // 0 & 1 = 1
-    // 1 & 0 = 1
-    // 1 & 1 = 1
-    // Value 3 = 1 -> value (1 &  2) reverse
-    // Value 3 = 0 -> value (1 & 2) unchanged
-
-    //var trainingInputs = new double[,] 
-    //{ 
-    //    { 0, 0, 1 },// 0 -> apply 1 = 1   
-    //    { 0, 0, 0 },// 0 -> apply 0 = 0
-    //    { 1, 0, 1 },// 1 -> apply 1 = 0
-    //    { 1, 0, 0 },// 1 -> apply 0 = 1
-    //    { 0, 1, 1 },// 1 -> apply 1 = 0
-    //    { 0, 1, 0 },// 1 -> apply 0 = 1
-    //    { 1, 1, 1 },// 1 -> apply 1 = 0
-    //    { 1, 1, 0 },// 1 -> apply 0 = 1
-    //};
-    //var trainingOutputs = NeuralNetWork.MatrixTranspose(new double[,] { { 1, 0, 0, 1, 0, 1, 0, 1 } });
-}
 
 static void PrintMatrix(double[,] matrix, bool includeRounded = false)
 {
@@ -85,8 +71,15 @@ static void PrintMatrix(double[,] matrix, bool includeRounded = false)
             {
                 var val = Math.Round(matrix[i, j]);
                 Console.WriteLine($" rounded: {val}");
-            }            
+            }
         }
         Console.Write(Environment.NewLine);
     }
+}
+
+static void RunPrediction(NeuralNetwork curNeuralNetwork, double[,] input)
+{
+    double[,] output = curNeuralNetwork.Think(input);        
+    Console.WriteLine($"\nConsidering new problem [{input[0,0]}, {input[0,1]}, {input[0,2]}, {input[0,3]}, {input[0, 4]}, {input[0, 5]}, {input[0, 6]}, {input[0, 7]}] => :");
+    PrintMatrix(output, true);    
 }
